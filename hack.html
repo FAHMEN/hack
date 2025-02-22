@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fazmen - Hack Terminal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: "Courier New", Courier, monospace;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px; min-height: 100vh;
+    }h1 { font-size: 1.8rem; margin-bottom: 15px; text-align: center; min-height: 40px; }
+#title-typing {
+  display: inline-block;
+  border-right: 3px solid #00ff00;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 4s steps(30, end) infinite, blink 0.7s step-end infinite;
+  font-size: 1.8rem;
+}
+@keyframes typing { from { width: 0; } to { width: 100%; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Burger Menu */
+#burger-menu {
+  position: fixed; top: 15px; left: 15px;
+  width: 35px; height: 30px; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: space-between;
+  z-index: 1000;
+}
+.bar {
+  width: 100%; height: 5px; background-color: #00ff00;
+  border-radius: 5px; transition: all 0.4s ease;
+}
+#burger-menu.active .bar:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+#burger-menu.active .bar:nth-child(2) {
+  opacity: 0;
+}
+#burger-menu.active .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+#nav-overlay {
+  position: fixed; top: 0; left: -100%; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.95); color: #00ff00;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  gap: 20px; font-size: 1.5rem; transition: left 0.5s ease;
+}
+#nav-overlay.active { left: 0; }
+#nav-overlay a {
+  text-decoration: none; color: #00ff00; font-weight: bold;
+  padding: 10px 20px; border: 2px solid #00ff00; border-radius: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+#nav-overlay a:hover { background-color: #00ff00; color: #000; }
+
+/* Form */
+#form-container {
+  width: 100%; max-width: 500px; margin-bottom: 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+input, button {
+  padding: 10px; font-size: 1rem; border-radius: 10px;
+  border: 2px solid #00ff00; outline: none;
+}
+input {
+  background-color: #111; color: #00ff00;
+}
+button {
+  background: linear-gradient(135deg, #00ff00, #007700);
+  color: #000; font-weight: bold; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00ff00; }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Terminal */
+#terminal {
+  width: 100%; max-width: 800px; height: 65vh;
+  border: 2px solid #00ff00; padding: 15px; overflow-y: auto;
+  background-color: #000; border-radius: 10px; font-size: 0.9rem;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); margin-top: 10px;
+}
+.line { margin: 2px 0; white-space: nowrap; }
+
+/* Loading Grid Animation */
+.loading-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 15px 0;
+}
+.loading-block {
+  width: 100%; padding-top: 100%; background-color: #222; border-radius: 2px;
+  animation: blockLoading 1.2s infinite alternate ease-in-out;
+}
+.loading-block.active { background-color: #00ff00; }
+@keyframes blockLoading {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.2; transform: scale(0.8); }
+}
+
+/* Success Notification */
+#success-notification {
+  display: none; margin-top: 15px; padding: 10px;
+  background-color: #00aa00; color: #fff; font-weight: bold;
+  border-radius: 8px; text-align: center; animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Bottom Panel */
+#bottom-panel {
+  width: 100%; max-width: 800px; background: linear-gradient(135deg, #002200, #004400);
+  padding: 15px; border-radius: 12px; margin-top: 20px; color: #00ff00;
+  text-align: center; font-size: 1rem; box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+footer { margin-top: 20px; color: #888; font-size: 0.9rem; text-align: center; }
+
+  </style>
+</head>
+<body>
+  <div id="burger-menu" onclick="toggleMenu()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>  <div id="nav-overlay">
+        <a href="https://donatesuport.rf.gd" target="_blank">Donate</a>
+    <a href="mailto:anonymousteam91@gmail.com">Contact</a>
+    <a href="#" onclick="alert('Bisa mengirim virus ke orang melalui nomor hp atau gmail mereka\n\ndonasi atau anda selanjutnya ☠️\n\n\n©Fazmen')">Features</a>
+  </div>  <h1><span id="title-typing">FAZMEN Terminal</span></h1>  <div id="form-container">
+    <input type="text" id="target-input" placeholder="Enter Gmail or Phone Number" />
+    <button id="hack-button" onclick="startHack()">Activate Hack</button>
+  </div>  <div id="terminal"></div>
+  <div id="success-notification">✅ Hack Process Completed Successfully!</div>  <div id="bottom-panel">
+    "Your security is our priority. Stay ahead with Fazmen's advanced systems."
+  </div>
+  <footer>© Fazmen Company by Fahril</footer>  <script>
+    const terminal = document.getElementById('terminal');
+    const notification = document.getElementById('success-notification');
+    const targetInput = document.getElementById('target-input');
+    const hackButton = document.getElementById('hack-button');
+
+    const logs = [ target => `Target acquired: ${target}`,
+      "⚙️ Initializing hack process...",
+      "Loading critical modules...", "Initializing hack process...", "Performing deep system reconnaissance...", "Establishing secure VPN tunnels...", "Loading critical exploit modules...", "Scanning network architecture for vulnerabilities...", "Generating encryption keys...", "Deploying zero-day exploits...", "Connecting to Fazmen proxy server...", "Access granted. Navigating filesystem directories...", "Bypassing multi-layered firewall protections...", "Evading intrusion detection systems (IDS)...", "Decrypting secured partitions...", "Deploying trojan horse variant x27...", "Injecting payload into target system registry...", "Extracting stored browser credentials...", "Capturing camera snapshots...", "Collecting GPS-based location data...", "Intercepting live communications feed...", "Accessing encrypted personal documents folder...", "Downloading sensitive corporate files...", "Analyzing retrieved data for intelligence value...", "Establishing persistent backdoor entry...", "Overriding and purging remote access logs...", "Re-encrypting files to cover digital footprints...", "Neutralizing active security countermeasures...", "Creating secure data exfiltration channel...", "Encrypting and uploading data to secure server...", "Loading critical modules...", "Finalizing data breach protocols...", "Deleting forensic footprints and system traces...", "Terminating all unauthorized connections...", "Compiling final report with extracted intelligence...", "Process complete. Operation successful and undetected.", "Disconnecting from compromised host...", "Closing all exploit vectors and sealing entry points...", "Operation concluded. Returning to standby mode...", "Executing code injection into live process threads...", "Initiating memory dump analysis...", "Uploading kernel-level exploit scripts...", "Hijacking system daemon processes...", "Redirecting network traffic through proxy layers...", "Injecting custom DLLs into active sessions...", "Compiling shadow user accounts...", "Executing privilege escalation routines...", "Injecting rootkit into system firmware...", "Monitoring active TCP/IP connections...", "Harvesting email communications from local clients...", "Intercepting VoIP communication streams...", "Mapping internal network subnets...", "Compiling MAC address tables from switches...", "Spoofing DNS records to redirect traffic...", "Installing persistent shell access...", "Enumerating running services and applications...", "Disabling security audit services...", "Altering system event logs...", "Compiling list of connected USB devices...", "Scanning wireless network configurations...", "Injecting ARP poisoning scripts...", "Executing man-in-the-middle attack modules...", "Capturing HTTP and HTTPS session cookies...", "Exfiltrating captured credentials to remote host...", "Modifying firmware images to include backdoors...", "Injecting malicious JavaScript into web portals...", "Intercepting OAuth authentication tokens...", "Brute forcing encrypted zip files...", "Parsing recovered documents for keywords...", "Extracting database schemas and content...", "Downloading user profile images...", "Accessing cloud storage buckets...", "Deploying ransomware payload...", "Encrypting target directories with custom cipher...", "Removing backup and recovery options...", "Initiating system-wide denial of service routines...", "Redirecting printer jobs to remote servers...", "Capturing screen recordings...", "Triggering BIOS-level exploits...", "Injecting startup scripts for persistence...", "Harvesting social media account information...", "Compiling user activity logs...", "Intercepting SMS and mobile notifications...", "Overriding biometric authentication systems...", "Enumerating VPN connections and configurations...", "Intercepting SSH keys and session data...", "Downloading local password vaults...", "Executing buffer overflow exploits...", "Collecting hardware serial numbers...", "Compiling employee contact directories...", "Harvesting digital certificates from keystores...", "Disabling antivirus services...", "Enumerating scheduled tasks for vulnerability...", "Scanning for open Bluetooth connections...", "Recording audio from system microphones...", "Intercepting live webcam feeds...", "Modifying host files to redirect domains...", "Deleting log files and temporary data...", "Establishing redundant backdoor mechanisms...", "Uploading forged documents into target archives...", "Injecting commands into command history...", "Forcing system reboots to deploy payloads...", "Loading critical modules...", "Hijacking cloud-based session tokens...", "Accessing encrypted messaging applications...", "Deleting version history from cloud platforms...", "Overriding MFA tokens for elevated access...", "Injecting scripts into browser extensions...", "Executing SQL injection against internal databases...", "Injecting malware into firmware updates...", "Compiling activity timeline for all users...", "Spoofing email headers to mask data exfiltration...", "Overwriting MBR to prevent recovery...", "Initiating final data purge protocols...", "Final cleanup process complete. Target compromised and secured." ];
+
+ 
+
+
+    function isValidInput(input) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^\d{10,15}$/;
+      return emailRegex.test(input) || phoneRegex.test(input);
+    }
+
+    function appendLog(text) {
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.textContent = text;
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function showLoadingAnimation(duration = 5000) {
+      const grid = document.createElement('div');
+      grid.className = 'loading-grid';
+
+      for (let i = 0; i < 12; i++) {
+        const block = document.createElement('div');
+        block.className = 'loading-block';
+        grid.appendChild(block);
+      }
+
+      terminal.appendChild(grid);
+      terminal.scrollTop = terminal.scrollHeight;
+
+      setTimeout(() => grid.remove(), duration);
+    }
+
+    function displayLogsSequentially(logIndex = 0) {
+      if (logIndex >= logs.length) {
+        notification.style.display = 'block';
+        return;
+      }
+
+      const log = logs[logIndex];
+      appendLog(typeof log === 'function' ? log(targetInput.value.trim()) : log);
+
+      if (log === "Loading critical modules...") {
+        showLoadingAnimation(4000);
+        setTimeout(() => displayLogsSequentially(logIndex + 1), 4500);
+      } else {
+        setTimeout(() => displayLogsSequentially(logIndex + 1), 300);
+      }
+    }
+
+    function startHack() {
+      const target = targetInput.value.trim();
+      if (!isValidInput(target)) {
+        alert('Please enter a valid Gmail or Phone Number.');
+        return;
+      }
+
+      hackButton.disabled = true;
+      targetInput.disabled = true;
+      terminal.innerHTML = '';
+      displayLogsSequentially();
+    }
+
+    function toggleMenu() {
+      const burger = document.getElementById('burger-menu');
+      const overlay = document.getElementById('nav-overlay');
+      burger.classList.toggle('active');
+      overlay.classList.toggle('active');
+    }
+  </script></body>
+</html>
